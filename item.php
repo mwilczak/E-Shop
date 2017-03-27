@@ -22,25 +22,35 @@
 			<div class="row">
 				<ol class="breadcrumb">
 					<li><a href="index.php">Home</a></li>
-					<li><a href="#">Watches</a></li>
-					<li class="active">Beautifull Watch</li>
+                    <?php
+                    if(isset($_GET['itemId'])) {
+                        $query = "SELECT * FROM item WHERE item_id = '$_GET[itemId]' ";
+                        $selectAll = mysqli_query($conn, $query);
+                    while ($rows = mysqli_fetch_assoc($selectAll)) {
+
+                            $itemId = $rows['item_id'];
+                            $itemImage = $rows['item_image'];
+                            $itemTitle = $rows['item_title'];
+                            $itemDesc = $rows['item_desc'];
+                            $itemQty = $rows['item_qty'];
+                            $itemCost = $rows['item_cost'];
+                            $itemPrice = $rows['item_price'];
+                            $itemDiscount = $rows['item_discount'];
+                            $itemCat = ucwords($rows['item_cat']);
+                            $finalPrice = $itemPrice - $itemDiscount;
+                        echo "
+                            <li><a href='category.php?category=$itemCat'>$itemCat</a></li>
+					        <li class='active'> $itemTitle</li>
+                        
+                        ";
+
+                    ?>
+
 				</ol>
 			</div>
 			<div class="row">
 <?php
-    if(isset($_GET['itemId'])) {
-    $query = "SELECT * FROM item WHERE item_id = '$_GET[itemId]' ";
-    $selectAll = mysqli_query($conn, $query);
-    while ($rows = mysqli_fetch_assoc($selectAll)) {
-        $itemId = $rows['item_id'];
-        $itemImage = $rows['item_image'];
-        $itemTitle = $rows['item_title'];
-        $itemDesc = $rows['item_desc'];
-        $itemQty = $rows['item_qty'];
-        $itemCost = $rows['item_cost'];
-        $itemPrice = $rows['item_price'];
-        $itemDiscount = $rows['item_discount'];
-        $finalPrice = $itemPrice - $itemDiscount;
+
 
         echo "
         

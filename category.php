@@ -13,7 +13,7 @@
 			<div class="row">
                 <?php
                 if(isset($_GET['category'])) {}
-                    $query = "SELECT * FROM item";
+                    $query = "SELECT * FROM item WHERE item_cat = '$_GET[category]'";
                     $selectAll = mysqli_query($conn, $query);
                     while($rows = mysqli_fetch_assoc($selectAll)){
                         $itemId = $rows['item_id'];
