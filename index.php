@@ -1,7 +1,7 @@
 <?php include 'includes/db.php';?>
 <html>
 	<head>
-		<title>Online Shopping</title>
+		<title>E-SHOP Online Shopping</title>
 		<link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" href="css/style.css">
 		<script src="js/jquery.js"></script>

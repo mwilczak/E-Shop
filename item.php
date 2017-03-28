@@ -97,51 +97,33 @@
 				<h2>Related Items</h2>
 			</div>
 			<section class="row">
-				
-				<div class="col-md-3">
-					<div class="col-md-12  single-item noPadding">
-						<div class="top"><img src="images/products/product1.jpg"></div>
-						<div class="bottom">
-							<h3 class="item-title"><a href="item.php">Beautifull Watch</a></h3>
-							<div class="pull-right cutted-price text-muted"><del>$ 500/=</del></div>
-							<div class="clearfix"></div>
-							<div class="pull-right discounted-price">$ 450/=</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="col-md-12  single-item noPadding">
-						<div class="top"><img src="images/products/product1.jpg"></div>
-						<div class="bottom">
-							<h3 class="item-title"><a href="item.php">Beautifull Watch</a></h3>
-							<div class="pull-right cutted-price text-muted"><del>$ 500/=</del></div>
-							<div class="clearfix"></div>
-							<div class="pull-right discounted-price">$ 450/=</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="col-md-12  single-item noPadding">
-						<div class="top"><img src="images/products/product1.jpg"></div>
-						<div class="bottom">
-							<h3 class="item-title"><a href="item.php">Beautifull Watch</a></h3>
-							<div class="pull-right cutted-price text-muted"><del>$ 500/=</del></div>
-							<div class="clearfix"></div>
-							<div class="pull-right discounted-price">$ 450/=</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="col-md-12  single-item noPadding">
-						<div class="top"><img src="images/products/product1.jpg"></div>
-						<div class="bottom">
-							<h3 class="item-title"><a href="item.php">Beautifull Watch</a></h3>
-							<div class="pull-right cutted-price text-muted"><del>$ 500/=</del></div>
-							<div class="clearfix"></div>
-							<div class="pull-right discounted-price">$ 450/=</div>
-						</div>
-					</div>
-				</div>
+				<?php
+                $relSql = "SELECT * FROM item ORDER BY rand() LIMIT 4";
+                $relQuery = mysqli_query($conn, $relSql);
+                while ($relRows = mysqli_fetch_assoc($relQuery)){
+                    $discounted = $relRows['item_price'] - $relRows['item_discount'];
+                    $itemId = $relRows['item_id'];
+                    $itemTitle = str_replace(' ','-', $relRows['item_title']);
+                    echo "
+                            <div class='col-md-3'>
+                            <div class='col-md-12  single-item noPadding'>
+                                <div class='top'><img src='$relRows[item_image]'></div>
+                                <div class='bottom'>
+                                    <h3 class='item-title'><a href='item.php?itemId=$itemId&itemTitle=$itemTitle'>$itemTitle</a></h3>
+                                    <div class='pull-right cutted-price text-muted'><del>$relRows[item_price]</del></div>
+                                    <div class='clearfix'></div>
+                                    <div class='pull-right discounted-price'>$discounted/=</div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    
+                    ";
+                }
+
+                ?>
+
+
 			</section>
 		</div><br><br><br><br><br>
 		<?php include 'includes/footer.php'; ?>
