@@ -31,8 +31,32 @@ if(isset($_SESSION['ref'])){
 		<link rel="stylesheet" href="css/style.css">
 		<script src="js/jquery.js"></script>
 		<script src="js/bootstrap.js"></script>
+        <script>
+            function ajax_func(){
+                xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function() {
+                    if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                        document.getElementById('buy_process').innerHTML = xmlhttp.responseText;
+                    }
+                }
+
+                xmlhttp.open('GET', 'buy_process.php', true);
+                xmlhttp.send();
+            }
+
+            function del_func(chk_id){
+                xmlhttp.onreadystatechane = function() {
+                    if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                        document.getElementById('buy_process').innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open('GET', 'buy_process.php?chk_del_id='+chk_id, true);
+                xmlhttp.send();
+            }
+        </script>
 	</head>
-	<body>
+	<body onload="ajax_func();">
 		<?php include 'includes/header.php'; ?>
 		<div class="container">
 		
@@ -120,31 +144,10 @@ if(isset($_SESSION['ref'])){
 								
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="buy_process">
+                            <!--Buy process data-->
 
-                            <?php
-                                 $quantity = 1;
-//                                 $chkSelectSql = "SELECT * FROM checkout WHERE chk_ref = '$_SESSION[ref]' ";
-                                 $chkSelectSql = "SELECT * FROM checkout c JOIN item i ON c.chk_item = i.item_id ";
-                                 $chkSelectSql .= "WHERE c.chk_ref = '$_SESSION[ref]' ";
-                                 $chkSelectQuery = mysqli_query($conn, $chkSelectSql);
-                                 while ($chkSelectRows = mysqli_fetch_assoc($chkSelectQuery)){
-                                     $discounted = $chkSelectRows['item_price'] - $chkSelectRows['item_discount'];
-                                     echo "
-                                        <tr>
-                                            <td>$quantity</td>
-                                            <td>$chkSelectRows[item_title]</td>
-                                            <td>1</td>
-                                            <td><button class='btn btn-danger btn-sm'>Delete</button></td>
-                                            <td class='text-right'><b>$discounted</b></td>
-                                            <td class='text-right'><b>100/=</b></td>  
-                                        </tr>
-                                          ";
-                                     $quantity++;
 
-                                 }
-
-                            ?>
 
 						</tbody>
 					</table>
