@@ -1,4 +1,27 @@
-<?php include 'includes/db.php';?>
+<?php
+session_start();
+include 'includes/db.php';
+
+if(isset($_GET['chk_item_id'])){
+        $date = date('Y-m-d h:i:s');
+        $randNum = mt_rand();
+if(isset($_SESSION['ref'])){
+
+
+
+}else {
+    $_SESSION['ref'] = $date.'_'.$randNum;
+
+}
+
+        $chkSQL = "INSERT INTO checkout (chk_item, chk_ref, chk_timing) ";
+        $chkSQL .= "VALUES ('$_GET[chk_item_id]', '$_SESSION[ref]', '$date')";
+
+        $query = mysqli_query($conn, $chkSQL);
+
+}
+?>
+
 
 <html>
 	<head>
@@ -98,24 +121,31 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>1</td>
-								<td>Beautiful Watch</td>
-								<td>1</td>
-								<td><button class="btn btn-danger btn-sm">Delete</button></td>
-								<td class="text-right"><b>100/=</b></td>
-								<td class="text-right"><b>100/=</b></td>
-								
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Tea Cup set</td>
-								<td>4</td>
-								<td><button class="btn btn-danger btn-sm">Delete</button></td>
-								<td class="text-right"><b>150/=</b></td>
-								<td class="text-right"><b>600/=</b></td>
-								
-							</tr>
+
+                            <?php
+                                 $quantity = 1;
+//                                 $chkSelectSql = "SELECT * FROM checkout WHERE chk_ref = '$_SESSION[ref]' ";
+                                 $chkSelectSql = "SELECT * FROM checkout c JOIN item i ON c.chk_item = i.item_id ";
+                                 $chkSelectSql .= "WHERE c.chk_ref = '$_SESSION[ref]' ";
+                                 $chkSelectQuery = mysqli_query($conn, $chkSelectSql);
+                                 while ($chkSelectRows = mysqli_fetch_assoc($chkSelectQuery)){
+                                     $discounted = $chkSelectRows['item_price'] - $chkSelectRows['item_discount'];
+                                     echo "
+                                        <tr>
+                                            <td>$quantity</td>
+                                            <td>$chkSelectRows[item_title]</td>
+                                            <td>1</td>
+                                            <td><button class='btn btn-danger btn-sm'>Delete</button></td>
+                                            <td class='text-right'><b>$discounted</b></td>
+                                            <td class='text-right'><b>100/=</b></td>  
+                                        </tr>
+                                          ";
+                                     $quantity++;
+
+                                 }
+
+                            ?>
+
 						</tbody>
 					</table>
 					<table class="table">

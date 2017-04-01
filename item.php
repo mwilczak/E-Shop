@@ -69,7 +69,7 @@
 
 			<aside class="col-md-4">
 				
-				<a href="buy.php" class="btn btn-success btn-lg btn-block">Buy</a>
+				<a href="buy.php?chk_item_id=<?php echo $itemId;?>" class="btn btn-success btn-lg btn-block">Buy</a>
 				<br>
 				<ul class="list-group">
 					<li class="list-group-item">
