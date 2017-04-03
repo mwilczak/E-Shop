@@ -36,7 +36,7 @@ $orderInsSQL = "INSERT INTO orders (order_name, order_email, order_contact, orde
                 VALUES ('$name', '$email', '$tel','$state', '$address', '$_SESSION[ref]', '$_SESSION[grand_sum]')";
 
         $query = mysqli_query($conn, $orderInsSQL);
-    if (!$query) {
+    if (!$queryd) {
 
         die("QUERY FAILED" ." ".  mysqli_error($conn));
 
