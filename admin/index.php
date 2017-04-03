@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>E-SHOP || Admin Panel</title>
     <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/admin_style.css">
     <script src="jquery.js"></script>
     <script src="bootstrap.js"></script>
 </head>
