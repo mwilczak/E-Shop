@@ -21,23 +21,6 @@ include 'includes/db.php';
         $total = 0;
         $delivery = 0;
 
-//        echo "
-//                <table class='table'>
-//                    <thead>
-//                        <tr>
-//                            <th>Lp.</th>
-//                            <th>Produkt</th>
-//                            <th>Ilość</th>
-//                            <th width='5%'>Akcja</th>
-//                            <th class='text-right'>Cena</th>
-//                            <th class='text-right'>Suma</th>
-//
-//                        </tr>
-//                    </thead>
-//                    <tbody id='buy_process'>
-//
-//        ";
-
         //  $chkSelectSql = "SELECT * FROM checkout WHERE chk_ref = '$_SESSION[ref]' ";
         $chkSelectSql = "SELECT * FROM checkout c JOIN item i ON c.chk_item = i.item_id WHERE c.chk_ref = '$_SESSION[ref]' ";
 
@@ -60,31 +43,32 @@ include 'includes/db.php';
             $quantity++;
 
         }
-        $grandSum = $total + $delivery;
+    $_SESSION['grand_sum'] = $grandSum = $total + $delivery;
+
         echo "
 
-                    <table class='table'>
-                        <thead>
-                            <tr>
-                                <th class='text-center' colspan='2'>Podsumowanie zamówienia</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Podsumowanie</td>
-                                <td class='text-right'><b>$total</b></td>
-                            </tr>
-                            <tr>
-                                <td>Koszty przesyłki</td>
-                                <td class='text-right'><b></b>$delivery</b></td>
-                            </tr>
-                            <tr>
-                                <td>Całkowity koszt</td>
-                                <td class='text-right'><b></b>$grandSum</b></td>
-                            </tr>
-            </tbody>
-                                </table>
- 
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th class='text-center' colspan='2'>Podsumowanie zamówienia</th>
+                    </tr>
+                </thead>
+                 <tbody>
+                    <tr>
+                        <td>Za towar</td>
+                        <td class='text-right'><b>$total</b></td>
+                    </tr>
+                    <tr>
+                        <td>Koszty przesyłki</td>
+                        <td class='text-right'><b></b>$delivery</b></td>
+                    </tr>
+                    <tr>
+                        <td>Całkowity koszt</td>
+                        <td class='text-right'><b></b>$_SESSION[grand_sum]</b></td>
+                    </tr>
+                 </tbody>
+                        </table>
+
 
 ";
 ?>

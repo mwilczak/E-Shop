@@ -23,6 +23,25 @@ if(isset($_GET['chk_item_id'])){
         ?><script>window.location = "buy.php";</script>  <?php
     }
 }
+
+if(isset($_POST['order_submit'])){
+        $name = mysqli_real_escape_string($conn, strip_tags($_POST['name']));
+        $email = mysqli_real_escape_string($conn, strip_tags($_POST['email']));
+        $tel = mysqli_real_escape_string($conn, strip_tags($_POST['tel']));
+        $address = mysqli_real_escape_string($conn, strip_tags($_POST['address']));
+        $state = mysqli_real_escape_string($conn, strip_tags($_POST['state']));
+
+
+$orderInsSQL = "INSERT INTO orders (order_name, order_email, order_contact, order_state, order_delivery, order_checkout_ref, order_total)
+                VALUES ('$name', '$email', '$tel','$state', '$address', '$_SESSION[ref]', '$_SESSION[grand_sum]')";
+
+        $query = mysqli_query($conn, $orderInsSQL);
+    if (!$query) {
+
+        die("QUERY FAILED" ." ".  mysqli_error($conn));
+
+    }
+}
 ?>
 
 
@@ -79,34 +98,36 @@ if(isset($_GET['chk_item_id'])){
   <div class="modal-dialog">
 
     <!-- Modal content-->
+
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
 
       </div>
       <div class="modal-body">
+  <form method="POST" action="#">
         <div class="group">
 			<label>Imię i nazwisko</label>
-			<input type="text"  class="form-control">
+			<input type="text" name="name"  class="form-control">
 		</div>
 		<div class="group">
 			<label>Email</label>
-			<input type="text" class="form-control">
+			<input type="email" name="email" class="form-control">
 		</div>
 		<div class="group">
 			<label>Numer telefonu</label>
-			<input type="text" class="form-control">
+			<input type="text" name="tel" class="form-control">
 		</div>
         <div>
             <label for="address">Adres dostawy</label>
-            <textarea class="form-control"></textarea>
+            <textarea name="address" class="form-control"></textarea>
 
 
         </div>
 		<div class="group">
 			<label>Województwo</label>
-			<input list="states" class="form-control">
-            <datalist id="states">
+			<input list="state" name="state" class="form-control">
+            <datalist id="state">
                 <option>dolnośląskie</option>
                 <option>kujawsko-pomorskie</option>
                 <option>lubelskie</option>
@@ -130,14 +151,15 @@ if(isset($_GET['chk_item_id'])){
 
 		<div class="group">
 			<label></label>
-			<input type="button" class="btn btn-info btn-lg btn-block" value="Submit">
+			<input type="submit" name="order_submit" class="btn btn-info btn-lg btn-block" value="Wyślij">
 		</div>
+  </form>
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
       </div>
     </div>
-
   </div>
 </div>
 			</div>
