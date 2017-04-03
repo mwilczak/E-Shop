@@ -15,7 +15,7 @@
                     $query = "SELECT * FROM item";
                     $selectAll = mysqli_query($conn, $query);
                     while($rows = mysqli_fetch_assoc($selectAll)){
-                        $itemId = $rows['item_id'];
+                        $item_id = $rows['item_id'];
                         $itemImage = $rows['item_image'];
                         $itemTitle = $rows['item_title'];
                         $itemDesc = $rows['item_desc'];
@@ -29,7 +29,7 @@
                             <div class='col-md-12  single-item noPadding'>
                             <div class='top'><img src=$itemImage></div>
                             <div class='bottom'>
-                                   <h3 class='item-title'><a href='item.php?itemId=$itemId&itemTitle=$itemTitle'>$itemTitle</a></h3>
+                                   <h3 class='item-title'><a href='item.php?itemId=$item_id&itemTitle=$itemTitle'>$itemTitle</a></h3>
                                    <div class='pull-right cutted-price text-muted'><del>$itemPrice</del></div>
                                    <div class='clearfix'></div>
                                    <div class='pull-right discounted-price'>$finalPrice</div>

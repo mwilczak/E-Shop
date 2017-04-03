@@ -3,22 +3,25 @@ session_start();
 include 'includes/db.php';
 
 if(isset($_GET['chk_item_id'])){
-        $date = date('Y-m-d h:i:s');
-        $randNum = mt_rand();
-if(isset($_SESSION['ref'])){
+    $date = date('Y-m-d h:i:s');
+    $randNum = mt_rand();
+    if(isset($_SESSION['ref'])){
 
 
 
-}else {
-    $_SESSION['ref'] = $date.'_'.$randNum;
+    }else {
+        $_SESSION['ref'] = $date.'_'.$randNum;
 
-}
+    }
 
-        $chkSQL = "INSERT INTO checkout (chk_item, chk_ref, chk_timing) ";
-        $chkSQL .= "VALUES ('$_GET[chk_item_id]', '$_SESSION[ref]', '$date')";
 
-        $query = mysqli_query($conn, $chkSQL);
+    $chkSQL = "INSERT INTO checkout (chk_item, chk_ref, chk_timing, chk_qty) ";
+    $chkSQL .= "VALUES ('$_GET[chk_item_id]', '$_SESSION[ref]', '$date', 1)";
 
+
+    if(mysqli_query($conn, $chkSQL)){
+        ?><script>window.location = "buy.php";</script>  <?php
+    }
 }
 ?>
 
@@ -54,14 +57,24 @@ if(isset($_SESSION['ref'])){
                 xmlhttp.open('GET', 'buy_process.php?chk_del_id='+chk_id, true);
                 xmlhttp.send();
             }
+            function up_chk_qty(chk_qty, chk_id){
+//                alert(chk_qty);
+                xmlhttp.onreadystatechange = function() {
+                    if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                        document.getElementById('buy_process').innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open('GET', 'buy_process.php?up_chk_qty='+chk_qty+'&up_chk_id='+chk_id, true);
+                xmlhttp.send();
+            }
         </script>
 	</head>
 	<body onload="ajax_func();">
 		<?php include 'includes/header.php'; ?>
 		<div class="container">
-		
+
 			<div class="page-header">
-				<h2 class="text-left">Checkout</h2><p class="text-right"> <button class="btn btn-success" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false">Proceed Button</button></p>
+				<h2 class="text-left">Koszyk</h2><p class="text-right"> <button class="btn btn-success" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false">Finaluzuj zamówienie</button></p>
 				<div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -69,7 +82,7 @@ if(isset($_SESSION['ref'])){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-     
+
       </div>
       <div class="modal-body">
         <div class="group">
@@ -128,54 +141,33 @@ if(isset($_SESSION['ref'])){
   </div>
 </div>
 			</div>
-			
+
 			<div class="panel panel-default">
-				<div class="panel-heading">Order Detail</div>
+				<div class="panel-heading">Szczegóły zamówienia</div>
 				<div class="panel-body">
 					<table class="table">
 						<thead>
 							<tr>
-								<th>S.no</th>
-								<th>Item</th>
-								<th>qty</th>
-								<th width="5%">Delete</th>
-								<th class="text-right">Price</th>
-								<th class="text-right">Total</th>
-								
+								<th>Lp.</th>
+								<th>Produkt</th>
+								<th>Ilość</th>
+								<th width="5%">Akcja</th>
+								<th class="text-right">Cena</th>
+								<th class="text-right">Suma</th>
+
 							</tr>
 						</thead>
 						<tbody id="buy_process">
                             <!--Buy process data-->
 
+                        </tbody>
+                    </table>
 
+                </div>
+            </div>
+        </div>
+        <br><br><br><br><br>
+        <?php include 'includes/footer.php'; ?>
 
-						</tbody>
-					</table>
-					<table class="table">
-						<thead>
-							<tr>
-								<th class="text-center" colspan="2">Order Summary</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Subtotal</td>
-								<td class="text-right"><b>700/=</b></td>
-							</tr>
-							<tr>
-								<td>Delivery Charges</td>
-								<td class="text-right"><b>Free</b></td>
-							</tr>
-							<tr>
-								<td>Grand Total</td>
-								<td class="text-right"><b>700/=</b></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<br><br><br><br><br>
-		<?php include 'includes/footer.php'; ?>
-	</body>
+    </body>
 </html>
