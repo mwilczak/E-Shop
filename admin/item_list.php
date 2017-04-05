@@ -1,4 +1,51 @@
 <?php include '../includes/db.php'; ?>
+
+<?php
+if (isset($_POST['submit'])) {
+
+    $title = mysqli_real_escape_string($conn, strip_tags($_POST['title']));
+    $category = mysqli_real_escape_string($conn, strip_tags($_POST['category']));
+    $desc = mysqli_real_escape_string($conn, $_POST['desc']);
+    $qty = mysqli_real_escape_string($conn, strip_tags($_POST['qty']));
+    $cost = mysqli_real_escape_string($conn, strip_tags($_POST['cost']));
+    $price = mysqli_real_escape_string($conn, strip_tags($_POST['price']));
+    $discount = mysqli_real_escape_string($conn, strip_tags($_POST['discount']));
+    $delivery = mysqli_real_escape_string($conn, strip_tags($_POST['delivery']));
+
+    if (isset($_FILES['image']['name'])) {
+        $fileName = $_FILES['image']['name'];
+        $pathAddressFile = "../images/items/$fileName";
+        $pathAddressFileDB = "images/items/$fileName";
+        $imgConfirm = 1;
+        $fileType = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        if ($_FILES['image']['size'] > 400000) {
+            $imgConfirm = 0;
+            echo "Wybierz zdjęcie o mniejszym rozmiarze";
+        }
+        if ($fileType != 'jpg' && $fileType != 'png' && $fileType != 'gif') {
+            $imgConfirm = 0;
+            echo "Zły typ pliku (do wyboru .jpg, .png lub .gif)";
+        }
+        if ($imgConfirm == 0) {
+
+        } else {
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $pathAddressFile)) {
+                $itemsInsSQL = "INSERT INTO item (item_image, item_title, item_desc, item_cat, 
+                                                  item_qty, item_cost, item_price, item_discount, item_delivery)
+                                VALUES ('$pathAddressFileDB', '$title', '$desc', '$category', '$qty', '$cost', 
+                                        '$price', '$discount', '$delivery')";
+                $itemsQuery = mysqli_query($conn, $itemsInsSQL);
+                if (!$itemsQuery) {
+
+                    die("QUERY FAILED" . " " . mysqli_error($conn));
+                }
+            }
+        }
+    }
+
+}
+
+?>
 <!doctype html>
 <html>
 <head>
@@ -10,13 +57,13 @@
     <script src="../js/jquery.js"></script>
     <script src="../js/bootstrap.js"></script>
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-    <script>tinymce.init({ selector:'textarea' });</script>
+    <script>tinymce.init({selector: 'textarea'});</script>
     <script>
         function get_item_list_data() {
 
             xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
                     document.getElementById('get_item_list_data').innerHTML = xmlhttp.responseText;
                 }
@@ -31,7 +78,8 @@
 <?php include 'includes/header.php'; ?>
 <div class="container">
     <button class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-keybord="false"
-            data-target="#add_new_item">Dodaj produkt</button>
+            data-target="#add_new_item">Dodaj produkt
+    </button>
     <!--MODAL-->
     <div id="add_new_item" class="modal fade">
         <div class="modal-dialog">
@@ -41,44 +89,61 @@
                     <h3 class="modal-title">Dodaj produkt</h3>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="">
+                    <form action="" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="image">Zdjęcie</label>
-                            <input type="file" class="form-control">
+                            <input type="file" name="image" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Nazwa produktu (tytuł)</label>
-                            <input type="text" class="form-control">
+                            <input type="text" name="title" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Opis produktu</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea class="form-control" name="desc" required></textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group">1
                             <label for="">Kategoria</label>
-                            <select name="" id="" class="form-control">
-                                <option value="">Wybierz kategorie</option>
+                            <select name="category" class="form-control" required>
+                                <option value="watches">Wybierz kategorie</option>
+                                <?php
+                                $catSQL = "SELECT * FROM category";
+                                $query = mysqli_query($conn, $catSQL);
+                                foreach ($query as $rowsCat) {
+                                    $catName = ucwords($rowsCat['cat_name']);
+                                    $catSlug = $rowsCat['cat_slug'];
+                                    if ($catSlug == '') {
+                                        $catSlug = $catName;
+                                    } else {
+                                        $catSlug = $catSlug;
+                                    }
+                                    echo "                    
+                                            <option value=$catSlug>$catName</option>
+                                            ";
+
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Ilość</label>
-                            <input type="number" class="form-control">
+                            <input type="number" name="qty" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="">Cena początkowa</label>
-                            <input type="number" class="form-control">
+                            <input type="number" name="cost" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">Cena końcowa</label>
-                            <input type="number" class="form-control">
+                            <input type="number" name="price" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="">Zniżka</label>
-                            <input type="number" class="form-control">
+                            <input type="number" name="discount" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">Koszty przesyłki</label>
-                            <input type="number" class="form-control">
+                            <input type="number" name="delivery" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-success btn-block" value="Dodaj produkt">
@@ -94,11 +159,11 @@
     </div>
     <!--END MODAL-->
 
-        <div id="get_item_list_data">
+    <div id="get_item_list_data">
 
         <!--Proces item list data ajax-->
 
-        </div>
+    </div>
 </div>
 
 <div class="clearfix"></div>
