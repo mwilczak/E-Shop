@@ -45,8 +45,8 @@
 
 
 			</div>
-		</div><div class="clearfix"></div>
-		<?php include 'includes/footer.php'; ?>
+		</div>
 	</body>
 </html>
+<?php include 'includes/footer.php'; ?>
 

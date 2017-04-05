@@ -192,8 +192,7 @@ if (isset($_POST['order_submit'])) {
         </div>
     </div>
 </div>
-<br><br><br><br><br>
-<?php include 'includes/footer.php'; ?>
-
 </body>
+
 </html>
+<?php include 'includes/footer.php'; ?>

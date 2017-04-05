@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
             xmlhttp.send();
         }
         function delete_item_list(item_id) {
-            xmlhttp.onreadystatechane = function () {
+            xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     document.getElementById('get_item_list_data').innerHTML = xmlhttp.responseText;
                 }
@@ -81,6 +81,23 @@ if (isset($_POST['submit'])) {
             xmlhttp.open('GET', 'item_list_process.php?del_item_id='+item_id, true);
             xmlhttp.send();
         }
+        function edit_item_list(item_id) {
+
+
+                    item_id = document.getElementById('up_item_id').value;
+                    item_title = document.getElementById('up_title').value;
+                    item_desc = document.getElementById('up_desc').value;
+                    item_category = document.getElementById('up_category').value;
+                    item_qty = document.getElementById('up_qty').value;
+                    item_cost = document.getElementById('up_cost').value;
+                    item_price = document.getElementById('up_price').value;
+                    item_discount = document.getElementById('up_discount').value;
+                    item_delivery = document.getElementById('up_delivery').value;
+
+            xmlhttp.open('GET', 'item_list_process.php?up_item_id='+item_id+'&up_title='+item_title+'&up_desc='+item_desc+'&up_category='+item_category+'&up_qty='+item_qty+'&up_cost='+item_cost+'&up_price='+item_price+'&up_discount='+item_discount+'&up_delivery='+item_delivery, true);
+            xmlhttp.send();
+        }
+
     </script>
 </head>
 <body onload="get_item_list_data();">
@@ -98,22 +115,22 @@ if (isset($_POST['submit'])) {
                     <h3 class="modal-title">Dodaj produkt</h3>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form  method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="image">Zdjęcie</label>
-                            <input type="file" name="image" class="form-control" required>
+                            <input type="file" name="image" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Nazwa produktu (tytuł)</label>
-                            <input type="text" name="title" class="form-control" required>
+                            <input type="text" name="title" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Opis produktu</label>
-                            <textarea class="form-control" name="desc" required></textarea>
+                            <textarea class="form-control" name="desc"></textarea>
                         </div>
-                        <div class="form-group">1
+                        <div class="form-group">
                             <label for="">Kategoria</label>
-                            <select name="category" class="form-control" required>
+                            <select name="category" class="form-control">
                                 <option value="watches">Wybierz kategorie</option>
                                 <?php
                                 $catSQL = "SELECT * FROM category";
@@ -136,7 +153,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group">
                             <label for="">Ilość</label>
-                            <input type="number" name="qty" class="form-control" required>
+                            <input type="number" name="qty" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">Cena początkowa</label>
@@ -144,7 +161,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group">
                             <label for="">Cena końcowa</label>
-                            <input type="number" name="price" class="form-control" required>
+                            <input type="number" name="price" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">Zniżka</label>
@@ -152,7 +169,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group">
                             <label for="">Koszty przesyłki</label>
-                            <input type="number" name="delivery" class="form-control" required>
+                            <input type="number" name="delivery" class="form-control">
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-success btn-block" value="Dodaj produkt">
@@ -176,6 +193,7 @@ if (isset($_POST['submit'])) {
 </div>
 
 <div class="clearfix"></div>
-<?php include 'includes/footer.php'; ?>
 </body>
+<?php include 'includes/footer.php'; ?>
+
 </html>
