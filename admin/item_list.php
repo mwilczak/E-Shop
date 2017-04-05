@@ -72,6 +72,15 @@ if (isset($_POST['submit'])) {
             xmlhttp.open('GET', 'item_list_process.php', true);
             xmlhttp.send();
         }
+        function delete_item_list(item_id) {
+            xmlhttp.onreadystatechane = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById('get_item_list_data').innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open('GET', 'item_list_process.php?del_item_id='+item_id, true);
+            xmlhttp.send();
+        }
     </script>
 </head>
 <body onload="get_item_list_data();">

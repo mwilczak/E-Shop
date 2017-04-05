@@ -1,4 +1,15 @@
 <?php include "../includes/db.php"; ?>
+<?php
+
+if(isset($_REQUEST['del_item_id'])){
+
+    $delItemSQL = "DELETE FROM item WHERE item_id = '$_REQUEST[del_item_id]'";
+    $deleteQuery = mysqli_query($conn, $delItemSQL);
+}
+
+?>
+
+
 <table class="table table-bordered table-striped">
     <thead>
     <tr class="admin-head">
@@ -21,6 +32,7 @@
     $query = mysqli_query($conn, $selectSQL);
     $quantity = 1;
     foreach ($query as $row) {
+        $itemId = $row['item_id'];
         $itemTitle = $row['item_title'];
         $itemImage = $row['item_image'];
         $itemDesc = $row['item_desc'];
@@ -51,17 +63,13 @@
                                        <button class='btn btn-danger dropdown-toggle'
                                        data-toggle='dropdown'>Actions<span class='caret'></span></button> 
                                        <ul class='dropdown-menu dropdown-menu-right'>
-                                           <li><a href='#'>Edytuj</a></li>
-                                           <li><a href='#'>Usuń</a></li>
-                                       </ul>
+                                           <li><a href='#'>Edytuj</a></li>"; ?>
+                                           <li><a href="javascript:;" onclick="delete_item_list(<?php echo $itemId;?>);">Usuń</a></li>
+                            <?php  echo " </ul>
                                     </div>
-                                    
-
                                 </td>   
                             </tr>
-                        
-                        
-                        ";
+                              ";
         $quantity++;
     }
 

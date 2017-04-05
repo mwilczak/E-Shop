@@ -1,5 +1,5 @@
 <footer class="navbar navbar-inverse navbar-fixed-bottom">
-    <ul class="nav navbar-nav">
-        <li><a href="#">Copyright 2017</li>
-    </ul>
+    <div class="nav navbar-nav">
+        <p style="color: white;">Copyright 2017</p>
+    </div>
 </footer>
