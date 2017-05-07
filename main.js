@@ -1,7 +1,7 @@
 /**
  * Created by mateusz on 12.04.17.
  */
-
+// LUPA
 var photo = document.querySelector('.photo'),
     mag = null,
     zoom = null;
@@ -78,3 +78,23 @@ var onMouseLeave = function () {
 photo.addEventListener('mouseenter', onMouseEnter);
 photo.addEventListener('mouseleave', onMouseLeave);
 photo.addEventListener('mousemove', onMouseMove);
+
+// PASEK POSTĘPU CZYTANEGO TEKSTU
+
+var article = document.querySelector('article'), //pobieramy article
+    windowHeight = window.innerHeight, //pobieramy wyskość okna
+    articleHeight = article.clientHeight,
+    maxScroll = article.clientHeight - window.innerHeight,
+    progress = document.createElement('progress');
+
+progress.classList.add('articleProgress');
+progress.value = 0;
+progress.max = maxScroll;
+
+article.appendChild(progress);
+
+var calculateProgress = function () {
+    progress.value = window.scrollY;
+};
+
+window.addEventListener('scroll', calculateProgress);

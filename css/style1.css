@@ -28,3 +28,44 @@
     background-size: 800px;
     background-repeat: no-repeat;
 }
+
+article {
+    font-size: 3em;
+    padding: 15px;
+    width: 50%;
+    margin: 0 auto;
+    border-top: 3px solid #c0c0c0;
+    border-bottom: 3px solid #c0c0c0;
+
+}
+
+.articleProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: #4cae4c;
+}
+
+.articleProgress::-webkit-progress-bar {
+    background-color: #2b542c;
+    border-radius: 2px;
+}
+
+.articleProgress::-moz-progress-bar {
+    background-color: #2b542c;
+    border-radius: 2px;
+}
+
+.articleProgress::-webkit-progress-value {
+    background: #ac2925;
+    transition: 1s width linear;
+}
+
+.articleProgress::-moz-progress-value {
+    background: #ac2925;
+    transition: 1s width linear;
+
+}
